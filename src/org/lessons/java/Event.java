@@ -95,9 +95,7 @@ public class Event {
     public String toString() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         String formattedDate = date.format(formatter);
-        return "Event{" +
-                "title='" + title + '\'' +
-                ", date=" + formattedDate +
-                '}';
+        return "title='" + title + '\'' +
+                ", date=" + formattedDate;
     }
 }
