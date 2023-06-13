@@ -11,23 +11,23 @@ public class Event {
     private int bookedSeat;
 
     // CONSTRUCTOR
-    public Event(String title, LocalDate date, int totalSeat) throws Exception {
+    public Event(String title, LocalDate date, int totalSeat) throws RuntimeException {
         if (title != null && !title.equals("")) {
             this.title = title;
         } else {
-            throw new Exception("Invalid title");
+            throw new RuntimeException("Invalid title");
         }
 
         if (date.isAfter(LocalDate.now())) {
             this.date = date;
         } else {
-            throw new Exception("The date must be after today");
+            throw new RuntimeException("The date must be after today");
         }
 
         if (totalSeat > 0) {
             this.TOTAL_SEAT = totalSeat;
         } else {
-            throw new Exception("Total seat must be > 0");
+            throw new RuntimeException("Total seat must be > 0");
         }
 
         this.bookedSeat = 0;
@@ -49,11 +49,11 @@ public class Event {
         return date;
     }
 
-    public void setDate(LocalDate date) throws Exception {
+    public void setDate(LocalDate date) throws RuntimeException {
         if (date.isAfter(LocalDate.now())) {
             this.date = date;
         } else {
-            throw new Exception("The date must be after today");
+            throw new RuntimeException("The date must be after today");
         }
 
     }
