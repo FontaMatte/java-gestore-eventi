@@ -5,7 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
 
@@ -94,8 +94,8 @@ public class Main {
                     System.out.println("Insert the number of reservation you want to do: ");
                     reservationNumber = Integer.parseInt(scanner.nextLine());
 
-                    if (reservationNumber > event.getAvailableSeat()) {
-                        throw new Exception("Not enough seats available for the requested reservations");
+                    if (reservationNumber < 1 || reservationNumber > event.getAvailableSeat()) {
+                        throw new Exception("Invalid number of reservations. Please enter a value between 1 and the available seats");
                     }
 
                     for (int i = 0; i < reservationNumber; i++) {
@@ -111,7 +111,7 @@ public class Main {
             System.out.println("Reserved Seat: " + event.getBookedSeat());
             System.out.println("Seats available: " + event.getAvailableSeat());
 
-        } while (response.equalsIgnoreCase("Y") && event.getAvailableSeat() > 0);
+        } while (!response.equalsIgnoreCase("N") && (reservationNumber < 1 || reservationNumber > event.getAvailableSeat()));
 
 
         //CANCEL RESERVATION   ----------------------------------------------
