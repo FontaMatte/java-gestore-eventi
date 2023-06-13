@@ -50,8 +50,16 @@ public class Main {
             }
         }
 
-        System.out.println("Insert the max number of seats for the event: ");
-        int totalSeat = Integer.parseInt(scanner.nextLine());
+        int totalSeat = 0;
+        do {
+            System.out.println("Insert the max number of seats for the event: ");
+            totalSeat = Integer.parseInt(scanner.nextLine());
+
+            if (totalSeat <= 0) {
+                System.out.println("Total Seats must be more than 0");
+            }
+        } while (totalSeat <= 0);
+
 
         Event event = new Event(eventTitle, date, totalSeat);
 
@@ -59,32 +67,42 @@ public class Main {
 
 
         // RESERVATION    ----------------------------------------------------
-        System.out.println("do you want to make a reservation? (Y/N): ");
-        String response = scanner.nextLine();
 
         int reservationNumber = 0;
-        
-        while (response.equalsIgnoreCase("Y")) {
-            try {
-                System.out.println("Insert the number of reservation you want to do: ");
-                reservationNumber = Integer.parseInt(scanner.nextLine());
+        String response = null;
 
-                for (int i = 0; i < reservationNumber; i++) {
-                    event.bookASeat();
+        do {
+            try {
+                System.out.println("do you want to make a reservation? (Y/N): ");
+                response = scanner.nextLine();
+
+                if (!response.equalsIgnoreCase("Y") && !response.equalsIgnoreCase("N")) {
+                    throw new Exception("Invalid input. Please enter 'Y' or 'N'.");
                 }
 
-                System.out.println("reservation made successfully!");
+                if (response.equalsIgnoreCase("Y")) {
+                    System.out.println("Insert the number of reservation you want to do: ");
+                    reservationNumber = Integer.parseInt(scanner.nextLine());
 
+                    if (reservationNumber > event.getAvailableSeat()) {
+                        throw new Exception("Not enough seats available for the requested reservations");
+                    }
+
+                    for (int i = 0; i < reservationNumber; i++) {
+                        event.bookASeat();
+                    }
+
+                    System.out.println("reservation made successfully!");
+                }
             } catch (Exception e) {
-                System.out.println("An error occurred during the reservation");
+                System.out.println("An error occurred during the reservation: " + e.getMessage());
             }
 
             System.out.println("Reserved Seat: " + event.getBookedSeat());
-            System.out.println("Seats available: " + (event.getTotalSeat() - event.getBookedSeat()));
+            System.out.println("Seats available: " + event.getAvailableSeat());
 
-            System.out.print("do you want to make a new reservation? (Y/N): ");
-            response = scanner.nextLine();
-        }
+        } while (response.equalsIgnoreCase("Y") && event.getAvailableSeat() > 0);
+
 
         //CANCEL RESERVATION   ----------------------------------------------
         System.out.println("Do you want to cancel a reservation? (Y/N) ");
@@ -110,11 +128,15 @@ public class Main {
             }
 
             System.out.println("Reserved Seat: " + event.getBookedSeat());
-            System.out.println("Seats available: " + (event.getTotalSeat() - event.getBookedSeat()));
+            System.out.println("Seats available: " + event.getAvailableSeat());
 
-            System.out.print("do you want to make a new cancellation? (Y/N): ");
-            response = scanner.nextLine();
-
+            if (event.getBookedSeat() > 0) {
+                System.out.print("do you want to make a new cancellation? (Y/N): ");
+                response = scanner.nextLine();
+            } else {
+                System.out.println("No reservation available to cancel");
+                break;
+            }
         }
 
         scanner.close();

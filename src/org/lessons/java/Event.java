@@ -98,6 +98,11 @@ public class Event {
         bookedSeat--;
     }
 
+    public int getAvailableSeat() {
+        return getTotalSeat() - getBookedSeat();
+    }
+
+
     // TO STING METHOD ----------------------------------------------------
     @Override
     public String toString() {
