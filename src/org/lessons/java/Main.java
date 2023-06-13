@@ -51,14 +51,24 @@ public class Main {
         }
 
         int totalSeat = 0;
+        boolean validInput = false;
+
         do {
             System.out.println("Insert the max number of seats for the event: ");
-            totalSeat = Integer.parseInt(scanner.nextLine());
+            String input = scanner.nextLine();
 
-            if (totalSeat <= 0) {
-                System.out.println("Total Seats must be more than 0");
+            try {
+                totalSeat = Integer.parseInt(input);
+                validInput = true;
+
+                if (totalSeat <= 0) {
+                    System.out.println("Total Seats must be more than 0");
+                    validInput = false;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a valid number");
             }
-        } while (totalSeat <= 0);
+        } while (!validInput);
 
 
         Event event = new Event(eventTitle, date, totalSeat);
