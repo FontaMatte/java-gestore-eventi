@@ -33,9 +33,17 @@ public class Main {
                 System.out.println("Date cannot be empty!");
             } else {
                 try {
+                    // DATE FORMATTING
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
                     date = LocalDate.parse(eventDate, formatter);
-                    validDate = true;
+                    // DATE VALIDATION
+                    if (date.isBefore(LocalDate.now())) {
+                        System.out.println("The date cannot be in the past!");
+                        date = null;
+                    } else {
+                        validDate = true;
+                    }
+
                 } catch (Exception e) {
                     System.out.println("Invalid date format. Please enter the date in the format dd/MM/yyyy");
                 }
