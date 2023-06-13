@@ -11,13 +11,36 @@ public class Main {
 
         // EVENT GENERATION -------------------------------------------------
 
-        System.out.println("Insert the Title of the event: ");
-        String eventTitle = scanner.nextLine();
+        String eventTitle = null;
+        do {
+            System.out.println("Insert the Title of the event: ");
+            eventTitle = scanner.nextLine();
 
-        System.out.println("Insert the date of the event (dd/MM/yyyy): ");
-        String eventDate = scanner.nextLine();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        LocalDate date = LocalDate.parse(eventDate, formatter);
+            if (eventTitle.isEmpty()) {
+                System.out.println("Error: Title cannot be null");
+            }
+        } while (eventTitle.isEmpty());
+
+
+        LocalDate date = null;
+        boolean validDate = false;
+
+        while (date == null) {
+            System.out.println("Insert the date of the event (dd/MM/yyyy): ");
+            String eventDate = scanner.nextLine();
+
+            if (eventDate.isEmpty()) {
+                System.out.println("Date cannot be empty!");
+            } else {
+                try {
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                    date = LocalDate.parse(eventDate, formatter);
+                    validDate = true;
+                } catch (Exception e) {
+                    System.out.println("Invalid date format. Please enter the date in the format dd/MM/yyyy");
+                }
+            }
+        }
 
         System.out.println("Insert the max number of seats for the event: ");
         int totalSeat = Integer.parseInt(scanner.nextLine());

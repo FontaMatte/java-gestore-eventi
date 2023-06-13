@@ -18,11 +18,16 @@ public class Event {
             throw new RuntimeException("Invalid title");
         }
 
-        if (date.isAfter(LocalDate.now())) {
-            this.date = date;
+        if (date != null) {
+            if (date.isAfter(LocalDate.now())) {
+                this.date = date;
+            } else {
+                throw new RuntimeException("The date must be after today");
+            }
         } else {
-            throw new RuntimeException("The date must be after today");
+            throw new RuntimeException("Date cannot be empty");
         }
+
 
         if (totalSeat > 0) {
             this.TOTAL_SEAT = totalSeat;
@@ -50,12 +55,15 @@ public class Event {
     }
 
     public void setDate(LocalDate date) throws RuntimeException {
-        if (date.isAfter(LocalDate.now())) {
-            this.date = date;
+        if (date != null) {
+            if (date.isAfter(LocalDate.now())) {
+                this.date = date;
+            } else {
+                throw new RuntimeException("The date must be after today");
+            }
         } else {
-            throw new RuntimeException("The date must be after today");
+            throw new RuntimeException("Date cannot be empty");
         }
-
     }
     public int getTotalSeat() {
         return TOTAL_SEAT;
