@@ -11,28 +11,16 @@ public class Event {
     private int bookedSeat;
 
     // CONSTRUCTOR
-    public Event(String title, LocalDate date, int totalSeat) throws RuntimeException {
-        if (title != null && !title.equals("")) {
-            this.title = title;
-        } else {
-            throw new RuntimeException("Invalid title");
-        }
+    public Event(String title, LocalDate date, int totalSeat) throws IllegalArgumentException {
 
-        if (date != null) {
-            if (date.isAfter(LocalDate.now())) {
-                this.date = date;
-            } else {
-                throw new RuntimeException("The date must be after today");
-            }
-        } else {
-            throw new RuntimeException("Date cannot be empty");
-        }
+        validateTitle(title);
 
+        validateDate(date);
 
         if (totalSeat > 0) {
             this.TOTAL_SEAT = totalSeat;
         } else {
-            throw new RuntimeException("Total seat must be > 0");
+            throw new IllegalArgumentException("Total seat must be > 0");
         }
 
         this.bookedSeat = 0;
@@ -42,28 +30,14 @@ public class Event {
     public String getTitle() {
         return title;
     }
-
-    public void setTitle(String title) throws Exception {
-        if (title != null && !title.equals("")) {
-            this.title = title;
-        } else {
-            throw new Exception("Invalid title");
-        }
+    public void setTitle(String title) throws IllegalArgumentException {
+        validateTitle(title);
     }
     public LocalDate getDate() {
         return date;
     }
-
-    public void setDate(LocalDate date) throws RuntimeException {
-        if (date != null) {
-            if (date.isAfter(LocalDate.now())) {
-                this.date = date;
-            } else {
-                throw new RuntimeException("The date must be after today");
-            }
-        } else {
-            throw new RuntimeException("Date cannot be empty");
-        }
+    public void setDate(LocalDate date) throws IllegalArgumentException {
+        validateDate(date);
     }
     public int getTotalSeat() {
         return TOTAL_SEAT;
@@ -75,40 +49,62 @@ public class Event {
 
 
     // BOOK A SEAT METHOD  ---------------------------------------------------------
-    public void bookASeat() throws Exception {
+    public void bookASeat() throws RuntimeException {
         if (date.isBefore(LocalDate.now())) {
-            throw new Exception("It is not possible to book a past event");
+            throw new RuntimeException("It is not possible to book a past event");
         }
-        if (bookedSeat >= TOTAL_SEAT) {
-            throw new Exception("There are no more seats available for the event");
+        if (getAvailableSeat() == 0) {
+            throw new RuntimeException("There are no more seats available for the event");
         }
-
         bookedSeat++;
     }
 
     // CANCEL A RESERVATION METHOD    --------------------------------------------------
-    public void cancelSeat() throws Exception {
+    public void cancelSeat() throws RuntimeException {
         if (date.isBefore(LocalDate.now())) {
-            throw new Exception("It is not possible to cancel a reservation of a past event");
+            throw new RuntimeException("It is not possible to cancel a reservation of a past event");
         }
-        if (bookedSeat <= 0) {
-            throw new Exception("There are no booked seats");
+        if (bookedSeat == 0) {
+            throw new RuntimeException("There are no booked seats");
         }
-
         bookedSeat--;
     }
 
+    // METHODS
     public int getAvailableSeat() {
-        return getTotalSeat() - getBookedSeat();
+        return TOTAL_SEAT - bookedSeat;
+    }
+
+    public String getFormattedDate() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        return this.date.format(formatter);
     }
 
 
     // TO STING METHOD ----------------------------------------------------
     @Override
     public String toString() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        String formattedDate = date.format(formatter);
-        return "title='" + title + '\'' +
-                ", date=" + formattedDate;
+        return getFormattedDate() + "-" + getTitle();
+    }
+
+    // VALIDATION METHODS
+    private void validateTitle(String title) {
+        if (title != null && !title.equals("")) {
+            this.title = title;
+        } else {
+            throw new IllegalArgumentException("Invalid title");
+        }
+    }
+
+    private void validateDate(LocalDate date) {
+        if (date != null) {
+            if (date.isAfter(LocalDate.now())) {
+                this.date = date;
+            } else {
+                throw new IllegalArgumentException("The date must be after today");
+            }
+        } else {
+            throw new IllegalArgumentException("Date cannot be empty");
+        }
     }
 }

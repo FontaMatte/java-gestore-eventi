@@ -115,6 +115,7 @@ public class Main {
 
 
         //CANCEL RESERVATION   ----------------------------------------------
+
         System.out.println("Do you want to cancel a reservation? (Y/N) ");
         response = scanner.nextLine();
 
