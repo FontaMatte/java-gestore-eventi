@@ -11,10 +11,14 @@ public class Concert extends Event{
     private LocalTime time;
     private BigDecimal price;
 
-    public Concert(String title, LocalDate date, int totalSeat, LocalTime time, BigDecimal price) throws RuntimeException {
+    public Concert(String title, LocalDate date, int totalSeat, LocalTime time, BigDecimal price) throws IllegalArgumentException {
         super(title, date, totalSeat);
         this.time = time;
+        if (price.compareTo(new BigDecimal(0)) < 0) {
+            throw new IllegalArgumentException("Price must not be negative");
+        }
         this.price = price;
+
     }
 
     // GETTERS SETTERS
@@ -30,16 +34,14 @@ public class Concert extends Event{
         return price;
     }
 
-    public void setPrice(BigDecimal price) {
+    public void setPrice(BigDecimal price) throws IllegalArgumentException {
+        if (price.compareTo(new BigDecimal(0)) < 0) {
+            throw new IllegalArgumentException("Price must not be negative");
+        }
         this.price = price;
     }
 
     // FORMATTING METHODS
-    public String getFormattedDate() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        return getDate().format(formatter);
-    }
-
     public String getFormattedTime() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
         return time.format(formatter);

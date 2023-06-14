@@ -23,9 +23,8 @@ public class Main {
 
 
         LocalDate date = null;
-        boolean validDate = false;
 
-        while (date == null) {
+        do {
             System.out.println("Insert the date of the event (dd/MM/yyyy): ");
             String eventDate = scanner.nextLine();
 
@@ -40,15 +39,12 @@ public class Main {
                     if (date.isBefore(LocalDate.now())) {
                         System.out.println("The date cannot be in the past!");
                         date = null;
-                    } else {
-                        validDate = true;
                     }
-
                 } catch (Exception e) {
                     System.out.println("Invalid date format. Please enter the date in the format dd/MM/yyyy");
                 }
             }
-        }
+        } while (date == null);
 
         int totalSeat = 0;
         boolean validInput = false;
